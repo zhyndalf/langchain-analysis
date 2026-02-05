@@ -17,14 +17,14 @@ C4Container
 
         ContainerDb(text_splitters, "text-splitters", "Python Package", "Document chunking and splitting utilities")
 
-        Container_Boundary(partners, "Partner Integrations") {
-            Container(partner_openai, "langchain-openai", "Python Package", "OpenAI models and embeddings")
-            Container(partner_anthropic, "langchain-anthropic", "Python Package", "Anthropic Claude integration")
-            Container(partner_ollama, "langchain-ollama", "Python Package", "Local model support")
-            Container(partner_others, "15+ other partners", "Python Packages", "Google, Cohere, AWS, Azure, etc.")
-        }
-
         Container(standard_tests, "standard-tests", "Python Package", "Shared test suite for integration validation")
+    }
+
+    Container_Boundary(partners, "Partner Integrations") {
+        Container(partner_openai, "langchain-openai", "Python Package", "OpenAI models and embeddings")
+        Container(partner_anthropic, "langchain-anthropic", "Python Package", "Anthropic Claude integration")
+        Container(partner_ollama, "langchain-ollama", "Python Package", "Local model support")
+        Container(partner_others, "15+ other partners", "Python Packages", "Google, Cohere, AWS, Azure, etc.")
     }
 
     System_Ext(llm_providers, "LLM Providers", "External AI services")
@@ -32,19 +32,21 @@ C4Container
     System_Ext(external_tools, "External Tools", "APIs and services")
 
     Rel(developer, langchain_v1, "Uses", "pip install langchain")
-    Rel(developer, partners, "Uses specific integrations", "pip install langchain-openai")
+    Rel(developer, partner_openai, "Uses specific integrations", "pip install langchain-openai")
 
     Rel(langchain_v1, langchain_core, "Depends on", "Imports base classes")
     Rel(langchain_classic, langchain_core, "Depends on", "Legacy implementation")
-    Rel(partners, langchain_core, "Implements interfaces from", "Extends base classes")
+    Rel(partner_openai, langchain_core, "Implements interfaces from", "Extends base classes")
+    Rel(partner_anthropic, langchain_core, "Implements interfaces from", "Extends base classes")
+    Rel(partner_ollama, langchain_core, "Implements interfaces from", "Extends base classes")
+    Rel(partner_others, langchain_core, "Implements interfaces from", "Extends base classes")
     Rel(langchain_v1, text_splitters, "Uses", "Document processing")
-    Rel(standard_tests, partners, "Validates", "Integration tests")
+    Rel(standard_tests, partner_openai, "Validates", "Integration tests")
 
-    Rel(partners, llm_providers, "Calls", "HTTP/API")
+    Rel(partner_openai, llm_providers, "Calls", "HTTP/API")
+    Rel(partner_anthropic, llm_providers, "Calls", "HTTP/API")
     Rel(langchain_v1, vector_dbs, "Integrates with", "Native clients")
     Rel(langchain_v1, external_tools, "Invokes", "Tool calling")
-
-    UpdateLayoutConfig($c4ShapeInRow="2", $c4BoundaryInRow="1")
 ```
 
 ## Key Containers
